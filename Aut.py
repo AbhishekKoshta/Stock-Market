@@ -37,13 +37,12 @@ while True:
     try:
         nxt = url.format(start)
         r = requests.get(nxt)
-        soup = BeautifulSoup(r.content)
+        soup = BeautifulSoup(r.content, 'html.parser')
         print(soup.find("table",{"class": "gf-table historical_price"}).get_text())
     except Exception as e:
         print(e)
         break
     start += 30
 
-<table id="octable" width="100%" border="0" cellpadding="0" cellspacing="0">
+# <table id="octable" width="100%" border="0" cellpadding="0" cellspacing="0">
 					
-    

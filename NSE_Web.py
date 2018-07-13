@@ -4,6 +4,7 @@
 
 import time
 sta = time.clock()
+import os
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -115,11 +116,25 @@ for Name in data_code['Code']:
          row_marker += 1   
               
     #print new_table
-    fil = "/home/kvv/Dropbox/Stock Investment/Coding/Excel/{}.xlsx".format(Name)
-
+    # fil = "/home/kvv/Dropbox/Stock Investment/Coding/Excel/{}.xlsx".format(Name)
+    # fil =  "C:\\Users\\iitb_student\\Dropbox\\Stock_Investment\\Coding\\Analysis\\Excel\\{}.xlsx".format(Name)
 #    fil = Name + 'Option_Chain_Table.xlsx'
-    new_table.to_excel(fil)
-    newdata = pd.read_excel(fil)
+
+
+    fil = os.getcwd() 
+    if "\\" in fil:
+        fil = fil +  "\\Excel\\"
+        if not os.path.exists(fil):
+            os.makedirs(fil)
+        fil = fil +  "{}.csv".format(Name)
+    else:
+        fil = fil +  "/Excel/"
+        if not os.path.exists(fil):
+            os.makedirs(fil)
+        fil = fil +  "{}.csv".format(Name)
+
+    new_table.to_csv(fil)
+    newdata = pd.read_csv(fil)
     newdata = newdata.fillna(0)
     newdata = newdata.replace('-',0)
     try:
@@ -181,7 +196,20 @@ for Name in data_code['Code']:
         title = "{}, 68 % chances {}; PCR {}; LTP {}".format(Name.upper(),Exp,round(PCR,1),LTP)
         
     plt.title(title)
-    path = "/home/kvv/Dropbox/Stock Investment/Coding/Graphs/{}.png".format(Name)
+
+    path = os.getcwd() 
+    if "\\" in path:
+        path = path +  "\\Graphs\\"
+        if not os.path.exists(path):
+            os.makedirs(path)
+        path = path +  "{}.png".format(Name)
+    else:
+        path = path +  "/Graphs/"
+        if not os.path.exists(path):
+            os.makedirs(path)
+        path = path +  "{}.png".format(Name)
+
+
     plt.savefig(path)
     
     print ("There is 68 % chances that the stocks will expire at ",Exp)
